@@ -6,6 +6,9 @@ public class MyGame : Game {
 
 	public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
+		Enemy enemy = new Enemy();
+
+		AddChild(enemy);
 	}
 
 	// For every game object, Update is called every frame, by the engine:
