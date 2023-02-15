@@ -5,16 +5,59 @@ using System.Text;
 
 namespace GXPEngine
 {
-    class Player : AnimationSprite
+    class Player : Sprite
     {
-        public Player() : base("barry.png",1,11)
+        float turnSpeed = 5f;
+        float moveSpeed = 7f;
+        public Player() : base("barry.png")
         {
+            SpawnPlayer();
+        }
 
+        public void SpawnPlayer()
+        {
+            SetXY(width / 2, height / 2);
+        }
+
+        //rotation
+        public void TurnSpaceShip()
+        {
+            if (Input.GetKey(Key.A))
+            {
+                rotation -= turnSpeed;
+            }
+            if (Input.GetKey(Key.D))
+            {
+                rotation += turnSpeed;
+            }
         }
         //insert movement
 
-        //insert shooting
+        //movement
+        public void MoveSpaceShip()
+        {
+            if (Input.GetKey(Key.W))
+            {
+                Move(0, moveSpeed);
+            }
+            if (Input.GetKey(Key.S))
+            {
+                Move(0, -moveSpeed);
+            }
+        }
 
-        //insert rotation
+        public void Update()
+        {
+            TurnSpaceShip();
+            MoveSpaceShip();
+        }
+
+        //Collisions
+        public void OnCollision(GameObject other)
+        {
+            /*if (other is Slime){
+                health--
+            }*/
+        }
     }
 }
