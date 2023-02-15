@@ -10,8 +10,8 @@ public class MyGame : Game {
 		Player player1  = new Player(); 
 		Enemy enemy = new Enemy();
 
-        AddChild(player1);
         AddChild(enemy);
+        AddChild(player1);
 	}
 
 	// For every game object, Update is called every frame, by the engine:
