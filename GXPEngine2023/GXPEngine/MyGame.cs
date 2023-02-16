@@ -5,12 +5,13 @@ using System.Drawing;                           // System.Drawing contains drawi
 public class MyGame : Game {
 
 
-    public MyGame() : base(1920, 1080, true)     // Create a window that's 800x600 and NOT fullscreen
+    public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
 		Player player1  = new Player(); 
 		Enemy enemy = new Enemy();
+		Enemy enemy1 = new Enemy();
 
-        AddChild(enemy);
+		AddChild(enemy);
         AddChild(player1);
 	}
 
