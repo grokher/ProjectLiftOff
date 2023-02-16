@@ -4,57 +4,71 @@ using System.Linq;
 using System.Text;
 using GXPEngine;
 
-    class Enemy : Sprite
+class Enemy : Sprite
+{
+    Player playerlocation;
+    bool gameIsPlaying = false;
+    bool IsmovingX = true;
+    float targetLocationX;
+    float targetLocationY;
+    int enemyLocationX;
+    int enemyLocationY = 5;
+
+    Random RNG = new Random();
+
+    public Enemy() : base("triangle.png")
     {
-        bool gameIsPlaying = false;
-        bool IsmovingX = true;
-        int enemyLocationX;
-        int enemyLocationY = 5;
+        SetScaleXY(0.5f, 0.5f);
+        SetXY(RNG.Next(0, 1920), height / 2);
 
-        Random RNG = new Random();
-
-        public Enemy() : base("triangle.png")
-        {
-            SetScaleXY(0.5f, 0.5f);
-            SetXY(RNG.Next(0,1920), height / 2);
-
-            //EnemyMovement();
-        }
-
-        void Update()
-        {
-            EnemyMovement();
-        }
-    
-        public void EnemyMovement()
-        {
-
-            if (!gameIsPlaying)
-            {
-                Console.WriteLine(enemyLocationX);
-                if(x <= 1920 && IsmovingX)
-                {
-                    //enemyLocationX = RNG.Next(0,1920);
-                    x = enemyLocationX += 1 * Time.deltaTime;
-                    if(enemyLocationX >= 1920)
-                    {
-                        IsmovingX = false;
-                    }
-                    y = enemyLocationY / 4 + RNG.Next(1, 1080);
-            }
-                else if(x > 0 && !IsmovingX)
-                {
-                    x = enemyLocationX -= 1 * Time.deltaTime;
-                    if(enemyLocationX <= 0)
-                    {
-                        IsmovingX = true;
-                    }
-                    y = enemyLocationY / 4 + RNG.Next(1, 1080);
-            }
-            }
-        }
-        //enemy for now is triangle.png
-        //insert spawning
-
-        //insert firing at Player
+        //EnemyMovement();
     }
+
+    void Update()
+    {
+        EnemyMovement();
+    }
+
+    public void EnemyMovement()
+    {
+        targetLocationX = 1920 / 2;
+        targetLocationY = 1080 / 2;
+
+        if (!gameIsPlaying)
+        {
+            Console.WriteLine(x);
+            if (x < targetLocationX && y < targetLocationY)
+            {
+                x += 0.5f * Time.deltaTime / 4;
+
+                y += 0.5f * Time.deltaTime / 4;
+            }
+            else if (x > targetLocationX && y < targetLocationY)
+            {
+                x -= 0.5f * Time.deltaTime / 4;
+
+                y += 0.5f * Time.deltaTime / 4;
+            }
+            else if (x < targetLocationX && y > targetLocationY)
+            {
+                x += 0.5f * Time.deltaTime / 4;
+
+                y -= 0.5f * Time.deltaTime / 4;
+            }
+            else if (x > targetLocationX && y > targetLocationY)
+            {
+                x -= 0.5f * Time.deltaTime / 4;
+
+                y += 0.5f * Time.deltaTime / 4;
+            }
+        }
+    }
+
+    public void OnCollision(GameObject target)
+    {
+
+    }
+    //insert spawning
+
+    //insert firing at Player
+}
