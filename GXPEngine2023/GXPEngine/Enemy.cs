@@ -2,66 +2,90 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GXPEngine;
 
-namespace GXPEngine
+class Enemy : Sprite
 {
-    
+    int health;
+    int damage;
+    bool gameIsPlaying = false;
+    float targetLocationX;
+    float targetLocationY;
 
-    class Enemy : Sprite
+    Random RNG = new Random();
+
+    public Enemy() : base("triangle.png")
     {
-        bool gameIsPlaying = false;
-        bool IsmovingX = true;
-        int enemyLocationX;
-
-        public Enemy() : base("triangle.png")
+        SetScaleXY(0.5f, 0.5f);
+        switch (RNG.Next(1,3))
         {
-            SetScaleXY(0.5f, 0.5f);
-            SetXY(1920 / 2, 1080 / 2);
-            
-            //EnemyMovement();
+            case 1:
+                SetXY(RNG.Next(0, 1920), height / 2);
+                break;
+            case 2:
+                SetXY(RNG.Next(0, 1920),RNG.Next(900,950));
+                break;
+            default:
+                break;
         }
 
-        void Update()
-        {
-            EnemyMovement();
-            Console.WriteLine(enemyLocationX);
-        }
-    
-        public void EnemyMovement()
-        {
-            
-            if (!gameIsPlaying)
-            {
-                if(enemyLocationX <= 1200 && IsmovingX)
-                {
-                    x = enemyLocationX += 1 * Time.deltaTime / 2;
-                    if(enemyLocationX > 1080)
-                    {
-                        IsmovingX = false;
-                        Console.WriteLine(IsmovingX);
-                        if (!IsmovingX)
-                        {
-                            x = enemyLocationX += -2 * Time.deltaTime / 2;
-                        }
-                    }
-                }
-
-                /*if(enemyLocationX >= 1080 && !IsmovingX)
-                {
-                    Console.WriteLine("moving Left");
-                    x = enemyLocationX -= 1 * Time.deltaTime;
-                    if(enemyLocationX < 0)
-                    {
-                        IsmovingX = false;
-                    }
-                }*/
-
-            }
-            //x++ * Time.deltaTime;
-        }
-        //enemy for now is triangle.png
-        //insert spawning
-
-        //insert firing at Player
+        //EnemyMovement();
     }
+
+    void Update()
+    {
+        EnemyMovement(0.5f);
+    }
+
+    public void EnemyMovement(float basicEnemySpeed)
+    {
+        targetLocationX = 1920 / 2;
+        targetLocationY = 1080 / 2;
+
+        if (!gameIsPlaying)
+        {
+            if (x <= targetLocationX && y <= targetLocationY)
+            {
+                x += basicEnemySpeed * Time.deltaTime / 4;
+
+                y += basicEnemySpeed * Time.deltaTime / 4;
+            }
+            else if (x >= targetLocationX && y <= targetLocationY)
+            {
+                x -= basicEnemySpeed * Time.deltaTime / 4;
+
+                y += basicEnemySpeed * Time.deltaTime / 4;
+            }
+            else if (x <= targetLocationX && y >= targetLocationY)
+            {
+                x += basicEnemySpeed * Time.deltaTime / 4;
+
+                y -= basicEnemySpeed * Time.deltaTime / 4;
+            }
+            else if (x >= targetLocationX && y >= targetLocationY)
+            {
+                x -= basicEnemySpeed * Time.deltaTime / 4;
+
+                y -= basicEnemySpeed * Time.deltaTime / 4;
+            }
+        }
+    }
+
+    public void OnCollision(GameObject target)
+    {
+        
+    }
+
+    public void Health(int healthAmount)
+    {
+        health -= healthAmount;
+    }
+
+    public void DealDamage(int damageAmount)
+    {
+        damage += damageAmount;
+    }
+    //insert spawning
+
+    //insert firing at Player
 }

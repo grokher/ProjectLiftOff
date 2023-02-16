@@ -9,8 +9,9 @@ public class MyGame : Game {
 	{
 		Player player1  = new Player(); 
 		Enemy enemy = new Enemy();
+		Enemy enemy1 = new Enemy();
 
-        AddChild(enemy);
+		AddChild(enemy);
         AddChild(player1);
 	}
 
