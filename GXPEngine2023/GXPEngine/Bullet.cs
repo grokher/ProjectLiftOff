@@ -13,7 +13,7 @@ namespace GXPEngine
 
         GameObject mother;
 
-        public Bullet(float pVx, float pVy, GameObject pMother) : base("colors.png")
+        public Bullet(float pVx, float pVy, GameObject pMother) : base("triangle.png")
         {
             SetOrigin(width / 2, height / 2);
             vx = pVx;
@@ -31,8 +31,8 @@ namespace GXPEngine
         {
             if(x + width < 0 || x > game.width || y + height < 0 || y > game.width)
             {
-                Console.WriteLine("Bullet Gone");
                 LateDestroy();
+                Console.WriteLine("Bullet Gone");
             }
         }
 

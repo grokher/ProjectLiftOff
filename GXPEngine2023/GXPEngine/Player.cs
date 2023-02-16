@@ -9,6 +9,10 @@ namespace GXPEngine
     {
         float turnSpeed = 7f;
         float moveSpeed = 12f;
+
+        // shield ability
+        int shieldCooldown = 3000;
+        int shieldDuration = 5000;
         public Player() : base("colors.png")
         {
             SpawnPlayer();
@@ -50,11 +54,23 @@ namespace GXPEngine
         //shooting
         public void Shoot()
         {
+    
+            Bullet bullet = new Bullet(_mirrorX ? -3 : 3, 0, this);
+            bullet.SetXY(x, y);
+
             if (Input.GetKey(Key.J))
             {
-                Bullet bullet = new Bullet(width/2, height /2, this);
-                bullet.SetXY(width / 2, height / 2);
-                AddChild(bullet);
+                parent.AddChild(bullet);
+                //play sound
+            }
+        }
+
+        public void Shield()
+        {
+            if (Time.time > shieldCooldown)
+            {
+                //press activates shield
+                //shieldCooldown = Time.time
             }
         }
 
