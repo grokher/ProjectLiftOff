@@ -50,12 +50,24 @@ namespace GXPEngine
         //shooting
         public void Shoot()
         {
+            if (Input.GetKey(Key.J))
+            {
+                Bullet bullet = new Bullet(width/2, height /2, this);
+                bullet.SetXY(width / 2, height / 2);
+                AddChild(bullet);
+            }
         }
 
+        public void LoseHealth()
+        {
+            //if (health)
+        }
         public void Update()
         {
             TurnSpaceShip();
             MoveSpaceShip();
+            Shoot();
+
         }
 
         //Collisions
