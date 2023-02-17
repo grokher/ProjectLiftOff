@@ -23,13 +23,15 @@ class Enemy : Sprite
     void enemySetup()
     {
         SetScaleXY(0.5f, 0.5f);
+
+        //setup spawnpoints RNG based
         switch (RNG.Next(1, 3))
         {
             case 1:
-                SetXY(RNG.Next(0, 1920), height / 2);
+                SetXY(RNG.Next(-150, 2050), RNG.Next(-400,-200));
                 break;
             case 2:
-                SetXY(RNG.Next(0, 1920), RNG.Next(900, 950));
+                SetXY(RNG.Next(-150, 2050), RNG.Next(1100, 1300));
                 break;
             default:
                 break;
@@ -43,11 +45,12 @@ class Enemy : Sprite
 
     public void EnemyMovement(float basicEnemySpeed)
     {
-        targetLocationX = 1920 / 2;
-        targetLocationY = 1080 / 2;
+        targetLocationX = 1920 / 2; //X-axis on where to move
+        targetLocationY = 1080 / 2; // Y-axis on where to move
 
         if (!gameIsPlaying)
         {
+            //movement along the axis
             if (x <= targetLocationX && y <= targetLocationY)
             {
                 x += basicEnemySpeed * Time.deltaTime / 4;
