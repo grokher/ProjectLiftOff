@@ -8,8 +8,8 @@ namespace GXPEngine
 {
     class Player : Sprite
     {
-        float turnSpeed = 7f;
-        float moveSpeed = 12f;
+        float turnSpeed = 3f;
+        float moveSpeed = 6f;
 
         // shield ability
         int shieldCooldown = 3000;
@@ -86,17 +86,17 @@ namespace GXPEngine
             TurnSpaceShip();
             MoveSpaceShip();
             Shoot();
-            Console.WriteLine(rotation);
 
         }
 
         //Collisions
         public void OnCollision(GameObject other)
         {
-            /*if (other is Slime){
-                play took impact sound
-                health--
-            }*/
+            if (other is Enemy){
+                //play took impact sound
+                //health--
+                Console.WriteLine("slimy");
+            }
         }
     }
 }
