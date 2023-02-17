@@ -57,9 +57,9 @@ namespace GXPEngine
         public void Shoot()
         {
     
-            Bullet bullet = new Bullet(x, y, this); //instantiate
+            Bullet bullet = new Bullet( this,2f); //instantiate
             
-            bullet.SetXY(x + 10, y); //direction
+           // bullet.SetXY(x + 10, y); //direction
 
             if (Input.GetKey(Key.J))
             {
