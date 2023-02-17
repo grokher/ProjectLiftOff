@@ -15,6 +15,7 @@ namespace GXPEngine
 
         public Bullet(float pVx, float pVy, GameObject pMother) : base("triangle.png")
         {
+            SetScaleXY(0.4f, 0.4f);
             SetOrigin(width / 2, height / 2);
             vx = pVx;
             vy = pVy;

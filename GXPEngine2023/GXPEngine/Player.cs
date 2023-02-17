@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GXPEngine.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace GXPEngine
         int shieldDuration = 5000;
         public Player() : base("colors.png")
         {
+            SetScaleXY(0.8f, 0.8f);
             SpawnPlayer();
         }
 
@@ -55,8 +57,9 @@ namespace GXPEngine
         public void Shoot()
         {
     
-            Bullet bullet = new Bullet(_mirrorX ? -3 : 3, 0, this);
-            bullet.SetXY(x, y);
+            Bullet bullet = new Bullet(x, y, this); //instantiate
+            
+            bullet.SetXY(x + 10, y); //direction
 
             if (Input.GetKey(Key.J))
             {
@@ -83,6 +86,7 @@ namespace GXPEngine
             TurnSpaceShip();
             MoveSpaceShip();
             Shoot();
+            Console.WriteLine(rotation);
 
         }
 
@@ -90,6 +94,7 @@ namespace GXPEngine
         public void OnCollision(GameObject other)
         {
             /*if (other is Slime){
+                play took impact sound
                 health--
             }*/
         }
