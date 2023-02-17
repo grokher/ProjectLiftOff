@@ -16,25 +16,29 @@ class Enemy : Sprite
 
     public Enemy() : base("triangle.png")
     {
+        enemySetup();
+        //EnemyMovement();
+    }
+
+    void enemySetup()
+    {
         SetScaleXY(0.5f, 0.5f);
-        switch (RNG.Next(1,3))
+        switch (RNG.Next(1, 3))
         {
             case 1:
                 SetXY(RNG.Next(0, 1920), height / 2);
                 break;
             case 2:
-                SetXY(RNG.Next(0, 1920),RNG.Next(900,950));
+                SetXY(RNG.Next(0, 1920), RNG.Next(900, 950));
                 break;
             default:
                 break;
         }
-
-        //EnemyMovement();
     }
 
     void Update()
     {
-        EnemyMovement(0.5f);
+        EnemyMovement(0.25f);
     }
 
     public void EnemyMovement(float basicEnemySpeed)
@@ -70,6 +74,7 @@ class Enemy : Sprite
             }
         }
     }
+
 
     public void OnCollision(GameObject target)
     {

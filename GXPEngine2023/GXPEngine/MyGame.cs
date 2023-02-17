@@ -4,19 +4,34 @@ using System.Drawing;                           // System.Drawing contains drawi
 
 public class MyGame : Game {
 
+    int maxEnemies;
 
     public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
 		Player player1  = new Player(); 
-		Enemy enemy = new Enemy();
-		Enemy enemy1 = new Enemy();
 
-		AddChild(enemy);
         AddChild(player1);
-	}
+    }
 
-	// For every game object, Update is called every frame, by the engine:
-	void Update() {
+    public void Spawn(int enemyAmount)
+    {
+        Enemy enemy = new Enemy();
+
+        for (int i = 0; i < enemyAmount; i++)
+        {
+                LateAddChild(enemy);
+            
+            Console.WriteLine(enemyAmount);
+        }
+    }
+
+    // For every game object, Update is called every frame, by the engine:
+    void Update() {
+        if(maxEnemies <= 16) //maxEnemies calculation += 2 = 2 + 1
+        {
+            Spawn(1);
+            maxEnemies++;
+        }
 		// Empty
 	}
 
