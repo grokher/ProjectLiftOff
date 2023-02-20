@@ -43,6 +43,13 @@ namespace GXPEngine
             y += vy;
         }
 
+        void OnCollision(GameObject other)
+        {
+            if(other is Enemy)
+            {
+                other.LateDestroy();
+            }
+        }
         void OffScreen()
         {
             if(x + width < 0 || x > game.width || y + height < 0 || y > game.width)

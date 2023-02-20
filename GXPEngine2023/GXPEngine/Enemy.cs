@@ -14,7 +14,7 @@ class Enemy : Sprite
 
     Random RNG = new Random();
 
-    public Enemy() : base("triangle.png")
+    public Enemy() : base("triangle.png", true)
     {
         enemySetup();
         //EnemyMovement();
