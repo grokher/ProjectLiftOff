@@ -14,9 +14,6 @@ public class MyGame : Game {
         HealthPickup healthpick = new HealthPickup();
         //SetXY(width / 2, height / 3);
         AddChild(player1);
-
-        AddChild(healthpick);
-
     }
 
     public void Spawn(int enemyAmount)
@@ -38,10 +35,7 @@ public class MyGame : Game {
             Spawn(1);
             maxEnemies++;
         }
-        /*if (player.HitTest(healthp))
-        {
-            healthp.Collect();
-        }*/
+        
 	}
 
 	static void Main()                          // Main() is the first method that's called when the program is run

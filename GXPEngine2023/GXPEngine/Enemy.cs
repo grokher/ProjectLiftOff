@@ -45,8 +45,8 @@ class Enemy : Sprite
 
     public void EnemyMovement(float basicEnemySpeed)
     {
-        targetLocationX = 1920 / 2; //X-axis on where to move
-        targetLocationY = 1080 / 2; // Y-axis on where to move
+        targetLocationX = MyGame.main.width / 2; //X-axis on where to move
+        targetLocationY = MyGame.main.height / 2; // Y-axis on where to move
 
         if (!gameIsPlaying)
         {

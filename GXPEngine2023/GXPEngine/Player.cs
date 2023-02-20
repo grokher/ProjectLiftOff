@@ -8,8 +8,13 @@ namespace GXPEngine
 {
     class Player : Sprite
     {
+        //movement
         float turnSpeed = 3f;
         float moveSpeed = 6f;
+
+        //shooting
+        const int shootInterval = 300;
+        int lastShot = 0;
 
         // shield ability
         int shieldCooldown = 3000;
@@ -79,15 +84,17 @@ namespace GXPEngine
             }
         }
 
-        public void LoseHealth()
-        {
-            //if (health)
-        }
+        
         public void Update()
         {
             TurnSpaceShip();
             MoveSpaceShip();
-            Shoot();
+            if(Time.time > lastShot + shootInterval)
+            {
+                Shoot();
+                lastShot = Time.time;
+            }
+            //Shoot();
 
         }
 
@@ -97,7 +104,8 @@ namespace GXPEngine
             if (other is Enemy){
                 //play took impact sound
                 //health--
-                Console.WriteLine("slimy");
+                Console.WriteLine("Freeze");
+                SetColor(125,0,215);
             }
         }
     }
