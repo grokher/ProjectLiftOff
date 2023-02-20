@@ -21,11 +21,16 @@ class Crystal : Sprite
             other.LateRemove();
             health--;
             Console.WriteLine("health " + health );
-            if (health <= 0)
-            {
-                LateDestroy();
-                //game lost
-            }
+        }
+    }
+    public void Health(int healthAmount)
+    {
+        health -= healthAmount;
+
+        if(health <= 0)
+        {
+            LateDestroy();
+            //game lost
         }
     }
 }

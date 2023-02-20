@@ -19,7 +19,7 @@ namespace GXPEngine
         // shield ability
         int shieldCooldown = 3000;
         int shieldDuration = 5000;
-        public Player() : base("spaceship.gif")
+        public Player() : base("colors.png")
         {
             SetScaleXY(0.8f, 0.8f);
             SpawnPlayer();
