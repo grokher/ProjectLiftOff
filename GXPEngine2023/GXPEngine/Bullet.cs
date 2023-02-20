@@ -25,8 +25,8 @@ namespace GXPEngine
             double angle = Radians(pMother.rotation + 90 );
             float x = (float) ( pMother.x + Math.Cos( angle ) * distance) ;
             float y = (float) ( pMother.y + Math.Sin( angle ) * distance) ;
-            Console.WriteLine("r = " + pMother.rotation + "\t" + x + "," + y);
-            Console.WriteLine("m = " + pMother + "\t" + pMother.width + "x" + pMother.height );
+            //Console.WriteLine("r = " + pMother.rotation + "\t" + x + "," + y);
+            //Console.WriteLine("m = " + pMother + "\t" + pMother.width + "x" + pMother.height );
             SetScaleXY(0.4f, 0.4f);
             SetOrigin(width / 2, height / 2);
             SetXY( x, y );
@@ -48,6 +48,7 @@ namespace GXPEngine
             if(other is Enemy)
             {
                 other.LateDestroy();
+
             }
         }
         void OffScreen()
