@@ -8,6 +8,16 @@ namespace GXPEngine
 {
     class Player : Sprite
     {
+        enum PlayerState
+        {
+            Alive,
+            Damaged,
+            Killed
+        }
+
+        static float BlinkingRate = 500f;
+        static float DamageBlinkingTime = 2000f;
+
         //movement
         float turnSpeed = 3f;
         float moveSpeed = 6f;
@@ -16,9 +26,10 @@ namespace GXPEngine
         const int shootInterval = 300;
         int lastShot = 0;
 
-        // shield ability
-        int shieldCooldown = 3000;
-        int shieldDuration = 5000;
+        // invincible frames
+        PlayerState currentState = PlayerState.Alive;
+        float damagedTimeOut = 0f;        
+        
         public Player() : base("colors.png")
         {
             SetScaleXY(0.8f, 0.8f);
@@ -58,29 +69,50 @@ namespace GXPEngine
             }
         }
 
+        private void SetState(PlayerState newState)
+        {
+            if (newState != currentState)
+            {
+                currentState = newState;
+                //respond to changes
+
+                switch (currentState) {
+                    case PlayerState.Damaged:
+                        damagedTimeOut = DamageBlinkingTime;
+                        break;
+                    case PlayerState.Alive:
+                        alpha = 1f;
+                        break;
+                    case PlayerState.Killed:
+                        break;
+                }
+            }
+        }
+
         //shooting
         public void Shoot()
         {
-    
-            Bullet bullet = new Bullet( this, 10.5f); //instantiate
-            
-           // bullet.SetXY(x + 10, y); //direction
-
-            if (Input.GetKey(Key.J))
-            {
-                parent.AddChild(bullet);
-                //play sound
-            }
+            Bullet bullet = new Bullet(this, 10.5f); //instantiate
+            parent.AddChild(bullet);
         }
 
 
 
         public void Shield()
         {
-            if (Time.time > shieldCooldown)
             {
                 //press activates shield
                 //shieldCooldown = Time.time
+            }
+        }
+
+        private void HandleBlinking()
+        {
+            alpha = Mathf.Floor(Time.now / BlinkingRate) % 2 * 0.5f + 0.5f;
+            damagedTimeOut -= Time.deltaTime;
+            if (damagedTimeOut < 0f)
+            {
+                SetState(PlayerState.Alive);
             }
         }
 
@@ -89,23 +121,45 @@ namespace GXPEngine
         {
             TurnSpaceShip();
             MoveSpaceShip();
-            if(Time.time > lastShot + shootInterval)
+
+            switch (currentState)
             {
+                case PlayerState.Alive:
+                    HandleShooting();
+                    break;
+
+                case PlayerState.Damaged:
+                    HandleBlinking();
+                    break;
+
+                case PlayerState.Killed:
+                    break;
+            }
+        }
+
+        private void HandleShooting()
+        {
+            if (Input.GetKey(Key.J) && (Time.time > lastShot + shootInterval))
+            {
+                //play sound
                 Shoot();
                 lastShot = Time.time;
             }
-            //Shoot();
-
         }
 
         //Collisions
         public void OnCollision(GameObject other)
         {
-            if (other is Enemy){
-                //play took impact sound
-                //health--
-                Console.WriteLine("Freeze");
-                SetColor(125,0,215);
+            if (currentState == PlayerState.Alive)
+            {
+                if (other is Enemy)
+                {
+                    //play took impact sound
+                    //health--
+                    Console.WriteLine("Freeze");
+                    //SetColor(125, 0, 215);
+                    SetState(PlayerState.Damaged);
+                }
             }
         }
     }
