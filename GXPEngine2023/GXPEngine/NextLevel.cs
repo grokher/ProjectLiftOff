@@ -9,4 +9,19 @@ class NextLevel
     //insert levelrotation
 
     //open next level
+
+    void DestroyAll()
+    {
+
+    }
+
+    void LoadLevel()
+    {
+        
+    }
+
+    void Update()
+    {
+
+    }
 }
