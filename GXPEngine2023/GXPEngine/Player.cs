@@ -57,7 +57,7 @@ namespace GXPEngine
         public void Shoot()
         {
     
-            Bullet bullet = new Bullet( this,2f); //instantiate
+            Bullet bullet = new Bullet( this, 8f); //instantiate
             
            // bullet.SetXY(x + 10, y); //direction
 
@@ -67,6 +67,8 @@ namespace GXPEngine
                 //play sound
             }
         }
+
+
 
         public void Shield()
         {

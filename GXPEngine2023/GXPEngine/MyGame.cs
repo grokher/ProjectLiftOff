@@ -4,13 +4,19 @@ using System.Drawing;                           // System.Drawing contains drawi
 
 public class MyGame : Game {
 
+    Player player;
+    HealthPickup healthp;
     int maxEnemies;
 
     public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
-		Player player1  = new Player(); 
-
+		Player player1  = new Player();
+        HealthPickup healthpick = new HealthPickup();
+        //SetXY(width / 2, height / 3);
         AddChild(player1);
+
+        AddChild(healthpick);
+
     }
 
     public void Spawn(int enemyAmount)
@@ -32,7 +38,10 @@ public class MyGame : Game {
             Spawn(1);
             maxEnemies++;
         }
-		// Empty
+        /*if (player.HitTest(healthp))
+        {
+            healthp.Collect();
+        }*/
 	}
 
 	static void Main()                          // Main() is the first method that's called when the program is run
