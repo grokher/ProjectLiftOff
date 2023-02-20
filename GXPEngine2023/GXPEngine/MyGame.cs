@@ -12,8 +12,11 @@ public class MyGame : Game {
 	{
 		Player player1  = new Player();
         HealthPickup healthpick = new HealthPickup();
-        //SetXY(width / 2, height / 3);
+        Crystal crystal = new Crystal();
+        player1.SetXY(width / 2, height / 2);
+        crystal.SetXY(width / 2, height / 2);
         AddChild(player1);
+        AddChild(crystal);
     }
 
     public void Spawn(int enemyAmount)
