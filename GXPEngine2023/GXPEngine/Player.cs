@@ -30,7 +30,7 @@ namespace GXPEngine
         PlayerState currentState = PlayerState.Alive;
         float damagedTimeOut = 0f;        
         
-        public Player() : base("colors.png")
+        public Player() : base("spaceship.png")
         {
             SetScaleXY(0.8f, 0.8f);
             SpawnPlayer();

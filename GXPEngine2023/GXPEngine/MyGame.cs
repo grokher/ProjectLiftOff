@@ -5,13 +5,13 @@ using System.Drawing;                           // System.Drawing contains drawi
 public class MyGame : Game {
 
     Player player;
-    HealthPickup healthp;
+    //HealthPickup healthp;
     int maxEnemies;
 
     public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
 		Player player1  = new Player();
-        HealthPickup healthpick = new HealthPickup();
+        //HealthPickup healthpick = new HealthPickup();
         //SetXY(width / 2, height / 3);
         AddChild(player1);
     }
