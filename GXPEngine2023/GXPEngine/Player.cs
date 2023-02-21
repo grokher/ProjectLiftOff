@@ -139,7 +139,7 @@ namespace GXPEngine
 
         private void HandleShooting()
         {
-            if (Input.GetKey(Key.J) && (Time.time > lastShot + shootInterval))
+            if (Input.GetKey(Key.SPACE) && (Time.time > lastShot + shootInterval))
             {
                 //play sound
                 Shoot();
@@ -156,8 +156,7 @@ namespace GXPEngine
                 {
                     //play took impact sound
                     //health--
-                    Console.WriteLine("Freeze");
-                    //SetColor(125, 0, 215);
+                    Console.WriteLine("Stunned");
                     SetState(PlayerState.Damaged);
                 }
             }
