@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using GXPEngine;
 
-class Enemy : Sprite
+class Enemy : AnimationSprite
 {
+    int animCounter;
+    int animFrame;
+
     int health;
     int damage;
     bool gameIsPlaying = false;
@@ -14,7 +17,7 @@ class Enemy : Sprite
 
     Random RNG = new Random();
 
-    public Enemy() : base("triangle.png", true)
+    public Enemy() : base("GreenSlime.png",4,5, 20,true)
     {
         enemySetup();
         //EnemyMovement();
@@ -41,6 +44,7 @@ class Enemy : Sprite
     void Update()
     {
         EnemyMovement(0.25f);
+        Anim();
     }
 
     public void EnemyMovement(float basicEnemySpeed)
@@ -75,6 +79,21 @@ class Enemy : Sprite
 
                 y -= basicEnemySpeed * Time.deltaTime / 4;
             }
+        }
+    }
+
+    private void Anim()
+    {
+        animCounter++;
+        if (animCounter > 10)
+        {
+            animCounter = 0;
+            animFrame++;
+            if (animFrame == frameCount)
+            {
+                animFrame = 0;
+            }
+            SetFrame(animFrame);
         }
     }
 
