@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GXPEngine
 {
-    class Player : Sprite
+    class Player : AnimationSprite
     {
         enum PlayerState
         {
@@ -28,9 +28,12 @@ namespace GXPEngine
 
         // invincible frames
         PlayerState currentState = PlayerState.Alive;
-        float damagedTimeOut = 0f;        
-        
-        public Player() : base("spaceship.png")
+        float damagedTimeOut = 0f;
+
+        int animCounter;
+        int animFrame;
+
+        public Player() : base("spaceship.png",1,2,6)
         {
             SetScaleXY(0.8f, 0.8f);
             SpawnPlayer();
@@ -116,6 +119,7 @@ namespace GXPEngine
             }
         }
 
+<<<<<<< HEAD
         private void ScreenEdge()
         {
             if (x + width < 0 || x > game.width || y + height < 0 || y > game.width)
@@ -144,11 +148,33 @@ namespace GXPEngine
             }
         }
 
+=======
+        private void Anim()
+        {
+            animCounter++;
+            if (animCounter > 10)
+            {
+                animCounter = 0;
+                animFrame++;
+                if (animFrame == frameCount)
+                {
+                    animFrame = 0;
+                }
+                SetFrame(animFrame);
+            }
+        }
+
+
+>>>>>>> 3ae5654b21aae4c40d466bccaa58953a131c8486
         public void Update()
         {
             TurnSpaceShip();
             MoveSpaceShip();
+<<<<<<< HEAD
             ScreenEdge();
+=======
+            Anim();
+>>>>>>> 3ae5654b21aae4c40d466bccaa58953a131c8486
 
             switch (currentState)
             {

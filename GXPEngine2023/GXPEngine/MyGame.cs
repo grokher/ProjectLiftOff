@@ -12,9 +12,14 @@ public class MyGame : Game {
     public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
 		Player player1  = new Player();
+        Crystal crystal = new Crystal();
         //HealthPickup healthpick = new HealthPickup();
         //SetXY(width / 2, height / 3);
+        player1.SetXY(main.width / 2, main.height / 2);
+        crystal.SetXY(main.width / 2, main.height / 2);
+
         AddChild(player1);
+        AddChild(crystal);
     }
 
     public void Spawn(int enemyAmount)

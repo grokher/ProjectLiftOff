@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace GXPEngine
 {
-    class Bullet : Sprite
+    class Bullet : AnimationSprite
     {
         float vx;
         float vy;
+
+        int animCounter;
+        int animFrame;
 
         GameObject mother;
 
@@ -19,7 +22,7 @@ namespace GXPEngine
             return (radians);
         }
 
-        public Bullet( Player pMother, float speed) : base("triangle.png")
+        public Bullet( Player pMother, float speed) : base("Missile.png",2,2,6)
         {
             float distance = pMother.height;
             double angle = Radians(pMother.rotation + 90 );
@@ -27,7 +30,7 @@ namespace GXPEngine
             float y = (float) ( pMother.y + Math.Sin( angle ) * distance) ;
             //Console.WriteLine("r = " + pMother.rotation + "\t" + x + "," + y);
             //Console.WriteLine("m = " + pMother + "\t" + pMother.width + "x" + pMother.height );
-            SetScaleXY(0.4f, 0.4f);
+            SetScaleXY(0.6f, 0.6f);
             SetOrigin(width / 2, height / 2);
             SetXY( x, y );
             width = width / 4;
@@ -45,10 +48,10 @@ namespace GXPEngine
 
         void OnCollision(GameObject other)
         {
+            
             if(other is Enemy)
             {
                 other.LateDestroy();
-
             }
         }
         void OffScreen()
@@ -60,10 +63,26 @@ namespace GXPEngine
             }
         }
 
+        private void Anim()
+        {
+            animCounter++;
+            if (animCounter > 10)
+            {
+                animCounter = 0;
+                animFrame++;
+                if (animFrame == frameCount)
+                {
+                    animFrame = 0;
+                }
+                SetFrame(animFrame);
+            }
+        }
+
         void Update()
         {
             OffScreen();
             BulletTravel();
+            //Anim();
         }
     }
 }
