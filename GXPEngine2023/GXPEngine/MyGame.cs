@@ -41,10 +41,11 @@ public class MyGame : Game {
 
 	static void Main()                          // Main() is the first method that's called when the program is run
 	{
-		new MyGame().Start();                   // Create a "MyGame" and start it
+		new MyGame().Start();                  // Create a "MyGame" and start it
+        //arduino connection
         SerialPort port = new SerialPort();
         port.PortName = "COM4";
-        port.BaudRate = 9600;
+        port.BaudRate = 60000;
         port.RtsEnable = true;
         port.DtrEnable = true;
         port.Open();
@@ -61,5 +62,6 @@ public class MyGame : Game {
                 port.Write(key.KeyChar.ToString());
             }
         }
+        //arduino connection ends here
     }
 }

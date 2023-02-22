@@ -116,11 +116,39 @@ namespace GXPEngine
             }
         }
 
-        
+        private void ScreenEdge()
+        {
+            if (x + width < 0 || x > game.width || y + height < 0 || y > game.width)
+            {
+                //just width is the sprite width
+                int gameWidth = MyGame.main.width;
+                int gameHeight = MyGame.main.height;
+
+                if (x < width/2)
+                {
+                    x = width/2;
+                }
+                else if (x > gameWidth - width / 2)
+                {
+                    x = gameWidth - width / 2;
+                }
+
+                if (y < height / 2)
+                {
+                    y = height / 2;
+                }
+                else if (y > gameHeight - height / 2)
+                {
+                    y = gameHeight - height / 2;
+                }
+            }
+        }
+
         public void Update()
         {
             TurnSpaceShip();
             MoveSpaceShip();
+            ScreenEdge();
 
             switch (currentState)
             {
@@ -157,6 +185,7 @@ namespace GXPEngine
                     //play took impact sound
                     //health--
                     Console.WriteLine("Stunned");
+                    other.LateDestroy();
                     SetState(PlayerState.Damaged);
                 }
             }
