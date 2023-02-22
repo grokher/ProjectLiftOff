@@ -3,15 +3,20 @@ using GXPEngine;                                // GXPEngine contains the engine
 using System.Drawing;                           // System.Drawing contains drawing tools such as Color definitions
 using System.IO.Ports;
 
-public class MyGame : Game {
+public class MyGame : Game
+{
 
     Player player;
     //HealthPickup healthp;
-    int maxEnemies;
+    int maxEnemies = 14;
+    int currentEnemies;
+
+    float timer;
+    float nextWave = 15000f;
 
     public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
-	{
-		Player player1  = new Player();
+    {
+        Player player1 = new Player();
         Crystal crystal = new Crystal();
         //HealthPickup healthpick = new HealthPickup();
         //SetXY(width / 2, height / 3);
@@ -28,25 +33,35 @@ public class MyGame : Game {
 
         for (int i = 0; i < enemyAmount; i++)
         {
-                LateAddChild(enemy);
-            
+            LateAddChild(enemy);
+
             Console.WriteLine(enemyAmount);
         }
     }
 
     // For every game object, Update is called every frame, by the engine:
-    void Update() {
-        if(maxEnemies <= 16) //maxEnemies calculation += 2 = 2 + 1
+    void Update()
+    {
+        timer += Time.deltaTime;
+
+        if (currentEnemies <= maxEnemies) //maxEnemies calculation += 2 = 2 + 1
         {
             Spawn(1);
-            maxEnemies++;
+            currentEnemies++;
         }
-        
-	}
 
-	static void Main()                          // Main() is the first method that's called when the program is run
-	{
-		new MyGame().Start();                  // Create a "MyGame" and start it
+        if(timer >= nextWave)
+        {
+            currentEnemies = 0;
+            timer = 0f;
+            maxEnemies += 2;
+        }
+
+    }
+
+    static void Main()                          // Main() is the first method that's called when the program is run
+    {
+        new MyGame().Start();                  // Create a "MyGame" and start it
         //arduino connection
         SerialPort port = new SerialPort();
         port.PortName = "COM4";

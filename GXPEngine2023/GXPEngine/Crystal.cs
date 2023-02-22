@@ -5,12 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using GXPEngine;
 
-class Crystal : Sprite
+class Crystal : AnimationSprite
 {
     int health = 10;
-    public Crystal() : base("CharacterDefense.png", true)
+
+    int animCounter;
+    int animFrame;
+
+    public Crystal() : base("Crystal.png",3,1,60,false, true)
     {
-        SetXY(width, height);
+        SetXY(width / 4, height / 4);
+        SetScaleXY(1f, 1f);
     }
 
     void OnCollision(GameObject other)
@@ -32,5 +37,24 @@ class Crystal : Sprite
             LateDestroy();
             //game lost
         }
+    }
+    private void Anim()
+    {
+        animCounter++;
+        if (animCounter > 10)
+        {
+            animCounter = 0;
+            animFrame++;
+            if (animFrame == frameCount)
+            {
+                animFrame = 0;
+            }
+            SetFrame(animFrame);
+        }
+    }
+
+    void Update()
+    {
+        Anim();
     }
 }
