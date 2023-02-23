@@ -15,6 +15,9 @@ namespace GXPEngine
             Killed
         }
 
+        private Dictionary<string, Powerup> inventory;
+        private Powerup activePowerup;
+
         static float BlinkingRate = 500f;
         static float DamageBlinkingTime = 2000f;
 
@@ -37,6 +40,15 @@ namespace GXPEngine
         {
             SetScaleXY(0.8f, 0.8f);
             SpawnPlayer();
+
+            inventory = new Dictionary<string, Powerup>
+            {
+                {"speedboost", new Powerup("speedboost") },
+                {"shootingboost", new Powerup("shootingboost") },
+                {"shield", new Powerup("shield") },
+                {"health", new Powerup("health") }
+            };
+            activePowerup = null;
         }
 
         public void SpawnPlayer()
@@ -99,16 +111,52 @@ namespace GXPEngine
             parent.AddChild(bullet);
         }
 
-
-
-        public void Shield()
+        //powerup
+        public void ActivatePowerup(string powerupType)
         {
+            if (activePowerup != null)
             {
-                //press activates shield
-                //shieldCooldown = Time.time
+                activePowerup.Deactivate();
+            }
+            activePowerup = inventory[powerupType];
+            activePowerup.Activate();
+        }
+        public void UpdateActivePowerup(float deltaTime)
+        {
+            if (activePowerup != null && activePowerup.IsActive())
+            {
+                // Reduce the active time of the powerup
+                float activeTime = activePowerup.GetType() == "health" ? 30f : 15f; // Health powerup lasts longer
+                activeTime -= deltaTime;
+                if (activeTime <= 0)
+                {
+                    activePowerup.Deactivate();
+                    activePowerup = null;
+                }
+            }
+        }
+        public void AddHealth(int amount)
+        {
+            inventory["health"].Activate();
+            // Add health to the player's health object here
+        }
+
+        public void HandleInput(char key)
+        {
+            if (key == 'j')
+            {
+                foreach (string powerupType in inventory.Keys)
+                {
+                    if (inventory[powerupType].IsActive())
+                    {
+                        ActivatePowerup(powerupType);
+                        break;
+                    }
+                }
             }
         }
 
+        //disable shooting
         private void HandleBlinking()
         {
             alpha = Mathf.Floor(Time.now / BlinkingRate) % 2 * 0.5f + 0.5f;
@@ -207,6 +255,13 @@ namespace GXPEngine
                     other.LateDestroy();
                     SetState(PlayerState.Damaged);
                 }
+            }
+            Powerup collidedPowerup = other.Tags
+            if (other.GetComponent<Powerup>() != null)
+            {
+                string powerupType = other.GetComponent<Powerup>().GetType();
+                inventory[powerupType].Activate();
+                // Remove the powerup object from the game here
             }
         }
     }
