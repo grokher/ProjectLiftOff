@@ -15,8 +15,8 @@ namespace GXPEngine
             Killed
         }
 
-        private Dictionary<string, Powerup> inventory;
-        private Powerup activePowerup;
+        //private Dictionary<string, Powerup> inventory;
+        //private Powerup activePowerup;
 
         static float BlinkingRate = 500f;
         static float DamageBlinkingTime = 2000f;
@@ -41,14 +41,14 @@ namespace GXPEngine
             SetScaleXY(0.8f, 0.8f);
             SpawnPlayer();
 
-            inventory = new Dictionary<string, Powerup>
+            /*inventory = new Dictionary<string, Powerup>
             {
                 {"speedboost", new Powerup("speedboost") },
                 {"shootingboost", new Powerup("shootingboost") },
                 {"shield", new Powerup("shield") },
                 {"health", new Powerup("health") }
             };
-            activePowerup = null;
+            activePowerup = null;*/
         }
 
         public void SpawnPlayer()
@@ -111,7 +111,7 @@ namespace GXPEngine
             parent.AddChild(bullet);
         }
 
-        //powerup
+        /*powerup
         public void ActivatePowerup(string powerupType)
         {
             if (activePowerup != null)
@@ -154,7 +154,7 @@ namespace GXPEngine
                     }
                 }
             }
-        }
+        }*/
 
         //disable shooting
         private void HandleBlinking()
@@ -256,13 +256,13 @@ namespace GXPEngine
                     SetState(PlayerState.Damaged);
                 }
             }
-            Powerup collidedPowerup = other.Tags
+            /*Powerup collidedPowerup = other.Tags
             if (other.GetComponent<Powerup>() != null)
             {
                 string powerupType = other.GetComponent<Powerup>().GetType();
                 inventory[powerupType].Activate();
                 // Remove the powerup object from the game here
-            }
+            }*/
         }
     }
 }

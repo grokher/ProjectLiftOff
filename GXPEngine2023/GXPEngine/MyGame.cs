@@ -6,8 +6,6 @@ using System.IO.Ports;
 public class MyGame : Game
 {
 
-    Player player;
-    //HealthPickup healthp;
     int maxEnemies = 14;
     int currentEnemies;
 
@@ -25,6 +23,7 @@ public class MyGame : Game
 
         AddChild(player1);
         AddChild(crystal);
+        AddChild(new HUD());
     }
 
     public void Spawn(int enemyAmount)
