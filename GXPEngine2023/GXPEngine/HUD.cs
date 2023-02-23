@@ -30,22 +30,29 @@ class HUD : GameObject
         healthBar.SetXY(game.width / 2, game.height / 10);
         AddChild(healthBar);
 
-        speedBoost = new Sprite("checkers.png");
-        speedBoost.SetXY(game.width - 400, game.height / 10);
-        speedBoost.scale = 0.7f;
+        speedBoost = new Sprite("SpeedUI.png");
+        speedBoost.SetXY(game.width - 420, game.height / 10);
+        speedBoost.scale = 1.3f;
+        speedBoost.alpha = 0.5f;
         AddChild(speedBoost);
 
-        shootingBoost = new Sprite("circle.png");
+        shootingBoost = new Sprite("MissileUI.png");
         shootingBoost.SetXY(game.width - 350, game.height / 10);
-        shootingBoost.scale = 0.7f;
+        shootingBoost.scale = 1.3f;
+        shootingBoost.alpha = 0.5f;
         AddChild(shootingBoost);
 
-        shield = new Sprite("colors.png");
-        shield.SetXY(game.width - 300, game.height / 10);
-        shield.scale = 0.7f;
+        shield = new Sprite("ShieldUI.png");
+        shield.SetXY(game.width - 280, game.height / 10);
+        shield.scale = 1.3f;
+        shield.alpha = 0.5f;
         AddChild(shield);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="health"></param>
     public void SetHealth(float health)
     {
         healthBar.Clear(Color.Red);

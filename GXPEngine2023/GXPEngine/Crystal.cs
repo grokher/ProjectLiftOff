@@ -12,6 +12,8 @@ class Crystal : AnimationSprite
     int animCounter;
     int animFrame;
 
+    HUD hud = null;
+
     public Crystal() : base("Crystal.png",3,1,60,false, true)
     {
         SetXY(width / 4, height / 4);
@@ -35,9 +37,13 @@ class Crystal : AnimationSprite
         if(health <= 0)
         {
             LateDestroy();
+            Console.WriteLine("Dead");
             //game lost
         }
     }
+
+ 
+
     private void Anim()
     {
         animCounter++;
@@ -55,6 +61,7 @@ class Crystal : AnimationSprite
 
     void Update()
     {
+        if (hud == null) hud = game.FindObjectOfType<HUD>();
         Anim();
     }
 }
