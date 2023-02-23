@@ -38,9 +38,10 @@ namespace GXPEngine
 
         //powerups
         private bool isSpeedBoostActive = false;
-        private float speedMultiplier = 2f;
-        private float speedBoostDuration = 5000f;
-        float powerupDuration = 0f;
+        private bool isShootBoostActive = false;
+        static float speedMultiplier = 2f;
+        static float speedBoostDuration = 5000f;
+        float powerupDuration = 10000f;
 
         int animCounter;
         int animFrame;
@@ -149,14 +150,39 @@ namespace GXPEngine
         }
 
         //enable double speed
-        public void SpeedBoostActivate()
+        public void ActivateSpeedBoost()
         {
+            Console.WriteLine("Got the boost");
+            isSpeedBoostActive = true;
             powerupDuration -= Time.deltaTime;
             if (powerupDuration < 0f)
             {
                 SetState(PlayerState.Alive);
+                isSpeedBoostActive = false;
+                speedMultiplier = 1f;
             }
         }
+
+        public void ActivateShootingBoost()
+        {
+            // TODO
+            Console.WriteLine("Rambo");
+            if (Input.GetKey(Key.J))
+            {
+                //int shootInterval = 150;
+            }
+        }
+
+        public void ActivateShield() 
+        {
+            Console.WriteLine("Force Field");
+        }
+        public void AddLife() 
+        {
+            //game.health++;
+        }
+
+
         private void ScreenEdge()
         {
             if (x + width < 0 || x > game.width || y + height < 0 || y > game.width)
@@ -219,7 +245,7 @@ namespace GXPEngine
                     break;
 
                 case PlayerState.SpeedBoost:
-                    SpeedBoostActivate();
+                    ActivateSpeedBoost();
                     break;
 
                 case PlayerState.Killed:

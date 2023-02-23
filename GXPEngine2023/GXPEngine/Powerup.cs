@@ -14,20 +14,24 @@ class Powerup : AnimationSprite
     // 2 = Shield
     // 3 = Extra Lives
     private int powerUpID = 0;
-    private string type;
     private bool active;
 
-    public Powerup(string type, Vector2 position, int powerUpID, bool active, String[] pngs) : base("", 3, 3)
+    public Powerup(Vector2 position, int powerUpID) : base( getTiledImage(powerUpID), 3, 3)
     {
-        this.type = type;
         this.powerUpID = powerUpID;
-        this.active = active;
+        this.active = false;
         SetXY(position.x, position.y);
+        SetCycle(0, 8);
     }
 
-    void Update()
-    {
-        // Rotate the powerup
+    static string getTiledImage( int powerUpID ) {
+        switch( powerUpID ) {
+            case 0: return "SpeedPowerup.png";
+            case 1: return "ShootPowerup.png";
+            case 2: return "ShieldPowerup.png";
+            case 3: return "HealthPowerup.png";
+        }
+        return "";  // crashes so maybe an empty image
     }
 
     void OnCollision(GameObject other)
@@ -37,31 +41,23 @@ class Powerup : AnimationSprite
         {
             switch (powerUpID)
             {
-                case 0:
-                    player.SpeedBoostActivate();
-                    break;
-                case 1:
-                    //player.ShootingBoostActivate();
-                    break;
-                case 2:
-                    //player.ActivateShield();
-                    break;
-                case 3:
-                    //player.AddLife();
-                    break;
+                case 0: player.ActivateSpeedBoost();    break;
+                case 1: player.ActivateShootingBoost(); break;
+                case 2: player.ActivateShield();        break;
+                case 3: player.AddLife();               break;
             }
             LateRemove();
         }
     }
 
+    public void Update()
+    {
+        Animate(0.2f);
+    }
+
     public void Activate()
     {
         active = true;
-    }
-
-    public void Deactivate()
-    {
-        active = false;
     }
 
     public bool IsActive()
@@ -71,6 +67,6 @@ class Powerup : AnimationSprite
 
     public new string GetType()
     {
-        return type;
+        return getTiledImage(powerUpID);
     }
 }

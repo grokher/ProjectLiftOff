@@ -4,6 +4,7 @@ using System.Drawing;                           // System.Drawing contains drawi
 using System.IO.Ports;
 using System.Collections.Generic;
 using System.Media;
+using GXPEngine.Core;
 
 public class MyGame : Game
 {
@@ -15,7 +16,8 @@ public class MyGame : Game
     float nextWave = 15000f;
     Sound soundtrack;
 
-    public MyGame() : base(1366, 768, true , false)     // Create a window that's 1366x768 and IS fullscreen and NOT using Vsync
+    public MyGame() : base(1366, 768, false, false)     // Create a window that's 1366x768 and IS fullscreen and NOT using Vsync
+    //public MyGame() : base(1366, 768, true, false)     // Create a window that's 1366x768 and IS fullscreen and NOT using Vsync
     {
         ShowMouse(false);
 
@@ -42,12 +44,9 @@ public class MyGame : Game
     }
     public void LoadLevel()
     {
-
         Player player1 = new Player();
         Crystal crystal = new Crystal();
         BackGround bg = new BackGround();
-        //HealthPickup healthpick = new HealthPickup();
-        //SetXY(width / 2, height / 3);
         player1.SetXY(main.width / 2, main.height / 2);
         crystal.SetXY(main.width / 2, main.height / 2);
         //bg.SetXY(main.width, main.height);
@@ -75,6 +74,7 @@ public class MyGame : Game
     // For every game object, Update is called every frame, by the engine:
     void Update()
     {
+        Powerup powerup = new Powerup(new Vector2(Utils.Random(200, 1000), Utils.Random(200, 600)), Utils.Random(0, 4));
         if (gameRunning)
         {
             timer += Time.deltaTime;
@@ -90,6 +90,7 @@ public class MyGame : Game
                 currentEnemies = 0;
                 timer = 0f;
                 maxEnemies += 2;
+                AddChild(powerup);
             }
         }
 
