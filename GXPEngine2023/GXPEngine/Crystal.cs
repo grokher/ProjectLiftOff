@@ -7,7 +7,8 @@ using GXPEngine;
 
 class Crystal : AnimationSprite
 {
-    int health = 10;
+    public int health = 1;
+
 
     int animCounter;
     int animFrame;
@@ -19,6 +20,15 @@ class Crystal : AnimationSprite
         SetXY(width / 4, height / 4);
         SetScaleXY(1f, 1f);
     }
+    public void LoadGameOver()
+    {
+        MyGame.game.gameRunning = false;
+        if (health <= 0)
+        {
+            GameOver gameover = new GameOver();
+            MyGame.game.LateAddChild(gameover);
+        }
+    }
 
     void OnCollision(GameObject other)
     {
@@ -29,17 +39,18 @@ class Crystal : AnimationSprite
             health--;
             Console.WriteLine("health " + health );
         }
+        if (health <= 0)
+        {
+            LateDestroy();
+            Console.WriteLine("Dead");
+            LoadGameOver();
+            //game lost
+        }
     }
     public void Health(int healthAmount)
     {
         health -= healthAmount;
 
-        if(health <= 0)
-        {
-            LateDestroy();
-            Console.WriteLine("Dead");
-            //game lost
-        }
     }
 
  

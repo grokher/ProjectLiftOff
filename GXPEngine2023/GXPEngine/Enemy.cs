@@ -31,10 +31,10 @@ class Enemy : AnimationSprite
         switch (RNG.Next(1, 3))
         {
             case 1: //top x-axis
-                SetXY(RNG.Next(-150, 2050), RNG.Next(-400,-200));
+                SetXY(RNG.Next(-150, 1550), RNG.Next(-400,-200));
                 break;
             case 2: //bottom X-axis
-                SetXY(RNG.Next(-150, 2050), RNG.Next(1100, 1300));
+                SetXY(RNG.Next(-150, 1550), RNG.Next(800, 1100));
                 break;
             default:
                 break;

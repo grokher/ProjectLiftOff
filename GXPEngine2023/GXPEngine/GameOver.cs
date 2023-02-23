@@ -7,7 +7,6 @@ using GXPEngine;
 
 class GameOver : Sprite
 {
-
     public GameOver() : base("GameOverButton.png")
     {
     }

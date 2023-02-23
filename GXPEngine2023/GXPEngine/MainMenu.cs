@@ -12,3 +12,10 @@ public class MainMenu : Sprite
     }
 
 }
+
+public class BackGround : Sprite
+{
+    public BackGround() : base("Background1.png",false,false)
+    {
+    }
+}

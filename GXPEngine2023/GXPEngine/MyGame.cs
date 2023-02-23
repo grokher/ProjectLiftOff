@@ -4,26 +4,29 @@ using System.Drawing;                           // System.Drawing contains drawi
 using System.IO.Ports;
 using System.Collections.Generic;
 
+
+
 public class MyGame : Game
 {
-
-    int maxEnemies = 14;
+    static public MyGame game;
+    int maxEnemies = 6;
     int currentEnemies;
-    bool gameRunning = false;   
+    public bool gameRunning = false;   
     float timer;
     float nextWave = 15000f;
 
-    public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
+    public MyGame() : base(1366, 768, true , false)     // Create a window that's 1366x768 and IS fullscreen and NOT using Vsync
     {
+        ShowMouse(false);
 
         MainMenu mainMenu = new MainMenu();
-        mainMenu.SetXY(main.width / 6, main.height / 14);
 
         AddChild(mainMenu);
+        game = this;
 
     }
 
-    public void DestoryAll()
+    void DestoryAll()
     {
         List<GameObject> children = GetChildren();
         foreach (GameObject child in children)
@@ -36,15 +39,19 @@ public class MyGame : Game
 
         Player player1 = new Player();
         Crystal crystal = new Crystal();
+        BackGround bg = new BackGround();
         //HealthPickup healthpick = new HealthPickup();
         //SetXY(width / 2, height / 3);
         player1.SetXY(main.width / 2, main.height / 2);
         crystal.SetXY(main.width / 2, main.height / 2);
+        //bg.SetXY(main.width, main.height);
 
+        AddChild(bg);
         AddChild(player1);
         AddChild(crystal);
         AddChild(new HUD());
     }
+
 
     public void Spawn(int enemyAmount)
     {
@@ -83,6 +90,7 @@ public class MyGame : Game
         {
             DestoryAll();
             LoadLevel();
+            timer = 10000;
             gameRunning = true;
         }
     }
