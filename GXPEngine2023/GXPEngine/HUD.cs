@@ -19,7 +19,7 @@ class HUD : GameObject
         score.TextAlign(CenterMode.Center, CenterMode.Center);
         score.Fill(Color.Gold);
         score.Text("Score: " /*+score*/);
-        score.SetXY(game.width/10, game.height / 10);
+        score.SetXY(game.width / 10, game.height / 10);
         AddChild(score);
 
         healthBar = new EasyDraw(250, 60);
@@ -31,7 +31,7 @@ class HUD : GameObject
         AddChild(healthBar);
 
         speedBoost = new Sprite("checkers.png");
-        speedBoost.SetXY(game.width - 400, game.height/10);
+        speedBoost.SetXY(game.width - 400, game.height / 10);
         speedBoost.scale = 0.7f;
         AddChild(speedBoost);
 
