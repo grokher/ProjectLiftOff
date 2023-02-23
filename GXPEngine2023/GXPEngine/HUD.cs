@@ -17,7 +17,7 @@ class HUD : GameObject
         score = new EasyDraw(250, 60);
         score.TextSize(40);
         score.TextAlign(CenterMode.Center, CenterMode.Center);
-        score.Fill(Color.Gold);
+        score.Fill(Color.Black);
         score.Text("Score: " /*+score*/);
         score.SetXY(game.width / 10, game.height / 10);
         AddChild(score);

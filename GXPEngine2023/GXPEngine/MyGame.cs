@@ -3,8 +3,7 @@ using GXPEngine;                                // GXPEngine contains the engine
 using System.Drawing;                           // System.Drawing contains drawing tools such as Color definitions
 using System.IO.Ports;
 using System.Collections.Generic;
-
-
+using System.Media;
 
 public class MyGame : Game
 {
@@ -14,16 +13,23 @@ public class MyGame : Game
     public bool gameRunning = false;   
     float timer;
     float nextWave = 15000f;
+    Sound soundtrack;
 
     public MyGame() : base(1366, 768, true , false)     // Create a window that's 1366x768 and IS fullscreen and NOT using Vsync
     {
         ShowMouse(false);
 
         MainMenu mainMenu = new MainMenu();
+        soundtrack = new Sound("soundtrack.wav", true);
 
         AddChild(mainMenu);
         game = this;
 
+    }
+
+    void PlayMusic()
+    {
+        soundtrack.Play();
     }
 
     void DestoryAll()
@@ -50,6 +56,7 @@ public class MyGame : Game
         AddChild(player1);
         AddChild(crystal);
         AddChild(new HUD());
+        PlayMusic();
     }
 
 
