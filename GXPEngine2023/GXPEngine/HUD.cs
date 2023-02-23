@@ -50,12 +50,12 @@ class HUD : GameObject
     }
 
     /// <summary>
-    /// 
+    /// health between 0 and 1, each enemy would do 0.1 damage
     /// </summary>
     /// <param name="health"></param>
-    public void SetHealth(float health)
+    public void SetHealth(int health)
     {
-        healthBar.Clear(Color.Red);
+        healthBar.Clear(Color.DarkRed);
         healthBar.Fill(Color.Aqua);
         healthBar.Rect(0, 0, healthBar.width * health, healthBar.height);
     }

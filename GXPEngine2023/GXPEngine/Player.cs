@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TiledMapParser;
 
 namespace GXPEngine
 {
@@ -12,6 +13,8 @@ namespace GXPEngine
         {
             Alive,
             Damaged,
+            SpeedBoost,
+            ShootBoost,
             Killed
         }
 
@@ -33,6 +36,12 @@ namespace GXPEngine
         PlayerState currentState = PlayerState.Alive;
         float damagedTimeOut = 0f;
 
+        //powerups
+        private bool isSpeedBoostActive = false;
+        private float speedMultiplier = 2f;
+        private float speedBoostDuration = 5000f;
+        float powerupDuration = 0f;
+
         int animCounter;
         int animFrame;
 
@@ -41,14 +50,6 @@ namespace GXPEngine
             SetScaleXY(0.8f, 0.8f);
             SpawnPlayer();
 
-            /*inventory = new Dictionary<string, Powerup>
-            {
-                {"speedboost", new Powerup("speedboost") },
-                {"shootingboost", new Powerup("shootingboost") },
-                {"shield", new Powerup("shield") },
-                {"health", new Powerup("health") }
-            };
-            activePowerup = null;*/
         }
 
         public void SpawnPlayer()
@@ -61,11 +62,20 @@ namespace GXPEngine
         public void TurnSpaceShip()
         {
             SetOrigin(width / 2, height / 2);
-            if (Input.GetKey(Key.A))
+            if (isSpeedBoostActive && Input.GetKey(Key.A))
+            {
+                rotation -= turnSpeed * speedMultiplier;
+            }
+            else if (Input.GetKey(Key.A))
             {
                 rotation -= turnSpeed;
             }
-            if (Input.GetKey(Key.D))
+
+            if (isSpeedBoostActive && Input.GetKey(Key.D))
+            {
+                rotation += turnSpeed * speedMultiplier;
+            }
+            else if (Input.GetKey(Key.D))
             {
                 rotation += turnSpeed;
             }
@@ -74,11 +84,20 @@ namespace GXPEngine
         //movement
         public void MoveSpaceShip()
         {
-            if (Input.GetKey(Key.W))
+            if (isSpeedBoostActive == true && Input.GetKey(Key.W))
+            {
+                Move(0, moveSpeed * speedMultiplier);
+            }
+            else if (Input.GetKey(Key.W))
             {
                 Move(0, moveSpeed);
             }
-            if (Input.GetKey(Key.S))
+
+            if(isSpeedBoostActive == true && Input.GetKey(Key.S))
+            {
+                Move(0, -moveSpeed * speedMultiplier);
+            }
+            else if (Input.GetKey(Key.S))
             {
                 Move(0, -moveSpeed);
             }
@@ -98,6 +117,12 @@ namespace GXPEngine
                     case PlayerState.Alive:
                         alpha = 1f;
                         break;
+                    case PlayerState.SpeedBoost:
+                        //time
+                        break;
+                    case PlayerState.ShootBoost:
+                        //shoot interval less
+                        break;
                     case PlayerState.Killed:
                         break;
                 }
@@ -111,50 +136,6 @@ namespace GXPEngine
             parent.AddChild(bullet);
         }
 
-        /*powerup
-        public void ActivatePowerup(string powerupType)
-        {
-            if (activePowerup != null)
-            {
-                activePowerup.Deactivate();
-            }
-            activePowerup = inventory[powerupType];
-            activePowerup.Activate();
-        }
-        public void UpdateActivePowerup(float deltaTime)
-        {
-            if (activePowerup != null && activePowerup.IsActive())
-            {
-                // Reduce the active time of the powerup
-                float activeTime = activePowerup.GetType() == "health" ? 30f : 15f; // Health powerup lasts longer
-                activeTime -= deltaTime;
-                if (activeTime <= 0)
-                {
-                    activePowerup.Deactivate();
-                    activePowerup = null;
-                }
-            }
-        }
-        public void AddHealth(int amount)
-        {
-            inventory["health"].Activate();
-            // Add health to the player's health object here
-        }
-
-        public void HandleInput(char key)
-        {
-            if (key == 'j')
-            {
-                foreach (string powerupType in inventory.Keys)
-                {
-                    if (inventory[powerupType].IsActive())
-                    {
-                        ActivatePowerup(powerupType);
-                        break;
-                    }
-                }
-            }
-        }*/
 
         //disable shooting
         private void HandleBlinking()
@@ -162,6 +143,16 @@ namespace GXPEngine
             alpha = Mathf.Floor(Time.now / BlinkingRate) % 2 * 0.5f + 0.5f;
             damagedTimeOut -= Time.deltaTime;
             if (damagedTimeOut < 0f)
+            {
+                SetState(PlayerState.Alive);
+            }
+        }
+
+        //enable double speed
+        public void SpeedBoostActivate()
+        {
+            powerupDuration -= Time.deltaTime;
+            if (powerupDuration < 0f)
             {
                 SetState(PlayerState.Alive);
             }
@@ -227,6 +218,10 @@ namespace GXPEngine
                     HandleBlinking();
                     break;
 
+                case PlayerState.SpeedBoost:
+                    SpeedBoostActivate();
+                    break;
+
                 case PlayerState.Killed:
                     break;
             }
@@ -250,19 +245,49 @@ namespace GXPEngine
                 if (other is Enemy)
                 {
                     //play took impact sound
-                    //health--
                     Console.WriteLine("Stunned");
                     other.LateDestroy();
                     SetState(PlayerState.Damaged);
                 }
             }
-            /*Powerup collidedPowerup = other.Tags
-            if (other.GetComponent<Powerup>() != null)
-            {
-                string powerupType = other.GetComponent<Powerup>().GetType();
-                inventory[powerupType].Activate();
-                // Remove the powerup object from the game here
-            }*/
+            
         }
+        /*public void ApplyPowerUp(Powerup powerup)
+        {
+            Powerup speedBoost = new Powerup(Powerup.Type.SpeedBoost, 2f, 5000f);
+            player.ApplyPowerUp(speedBoost);
+            switch (powerup.type)
+            {
+                case Powerup.Type.SpeedBoost:
+                    isSpeedBoostActive = true;
+                    speedMultiplier = powerup.multiplier;
+                    powerupDuration = powerup.duration;
+                    SetState(PlayerState.SpeedBoost);
+                    break;
+
+                case Powerup.Type.ShootBoost:
+                    // TODO: Implement shoot boost
+                    break;
+
+                default:
+                    // Unknown power-up type
+                    break;
+            }
+        }
+
+
+        /*public void SpeedBoostActivate()
+        {
+            if (isSpeedBoostActive == false)
+            {
+                isSpeedBoostActive = true;
+                Console.WriteLine("Boost on");
+                
+            }
+            else
+            {
+                speedBoostDuration 
+            }
+        }*/
     }
 }

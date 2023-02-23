@@ -89,6 +89,7 @@
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="GameOver.cs" />
+    <Compile Include="Powerup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
