@@ -16,6 +16,8 @@ namespace GXPEngine
 
         GameObject mother;
 
+        Sound enemySound;
+
         public static double Radians(double degrees)
         {
             double radians = (Math.PI / 180) * degrees;
@@ -24,6 +26,7 @@ namespace GXPEngine
 
         public Bullet( Player pMother, float speed) : base("Missile.png",2,2,6)
         {
+
             float distance = pMother.height;
             double angle = Radians(pMother.rotation + 90 );
             float x = (float) ( pMother.x + Math.Cos( angle ) * distance) ;
@@ -51,6 +54,8 @@ namespace GXPEngine
             
             if(other is Enemy)
             {
+                enemySound = new Sound("SlimeDeath.wav", false);
+                enemySound.Play();
                 other.LateDestroy();
             }
         }

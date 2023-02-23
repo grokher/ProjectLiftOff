@@ -7,8 +7,9 @@ using GXPEngine;
 
 class Crystal : AnimationSprite
 {
-    public int health = 1;
+    public int health = 10;
 
+    Sound damageSound;
 
     int animCounter;
     int animFrame;
@@ -32,11 +33,13 @@ class Crystal : AnimationSprite
 
     void OnCollision(GameObject other)
     {
+        damageSound = new Sound("ping.wav", false);
         if (other is Enemy)
         {
             //HitTest(other);
             other.LateRemove();
             health--;
+            damageSound.Play();
             Console.WriteLine("health " + health );
         }
         if (health <= 0)
