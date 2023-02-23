@@ -2,18 +2,38 @@ using System;                                   // System contains a lot of defa
 using GXPEngine;                                // GXPEngine contains the engine
 using System.Drawing;                           // System.Drawing contains drawing tools such as Color definitions
 using System.IO.Ports;
+using System.Collections.Generic;
 
 public class MyGame : Game
 {
 
     int maxEnemies = 14;
     int currentEnemies;
-
+    bool gameRunning = false;   
     float timer;
     float nextWave = 15000f;
 
     public MyGame() : base(1920, 1080, false)     // Create a window that's 800x600 and NOT fullscreen
     {
+
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.SetXY(main.width / 6, main.height / 14);
+
+        AddChild(mainMenu);
+
+    }
+
+    public void DestoryAll()
+    {
+        List<GameObject> children = GetChildren();
+        foreach (GameObject child in children)
+        {
+            child.Destroy();
+        }
+    }
+    public void LoadLevel()
+    {
+
         Player player1 = new Player();
         Crystal crystal = new Crystal();
         //HealthPickup healthpick = new HealthPickup();
@@ -41,21 +61,30 @@ public class MyGame : Game
     // For every game object, Update is called every frame, by the engine:
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if (currentEnemies <= maxEnemies) //maxEnemies calculation += 2 = 2 + 1
+        if (gameRunning)
         {
-            Spawn(1);
-            currentEnemies++;
+            timer += Time.deltaTime;
+
+            if (currentEnemies <= maxEnemies) //maxEnemies calculation += 2 = 2 + 1
+            {
+                Spawn(1);
+                currentEnemies++;
+            }
+
+            if (timer >= nextWave)
+            {
+                currentEnemies = 0;
+                timer = 0f;
+                maxEnemies += 2;
+            }
         }
 
-        if(timer >= nextWave)
+        if (Input.GetMouseButtonUp(0) || Input.GetKey(Key.J) && gameRunning == false)
         {
-            currentEnemies = 0;
-            timer = 0f;
-            maxEnemies += 2;
+            DestoryAll();
+            LoadLevel();
+            gameRunning = true;
         }
-
     }
 
     static void Main()                          // Main() is the first method that's called when the program is run
