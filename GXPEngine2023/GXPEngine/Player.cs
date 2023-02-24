@@ -46,6 +46,8 @@ namespace GXPEngine
         int animCounter;
         int animFrame;
 
+        Sound bulletSound;
+
         public Player() : base("spaceship.png",1,2,6)
         {
             SetScaleXY(0.8f, 0.8f);
@@ -255,10 +257,12 @@ namespace GXPEngine
 
         private void HandleShooting()
         {
-            if (Input.GetKey(Key.SPACE) && (Time.time > lastShot + shootInterval))
+            if (Input.GetKey(Key.SPACE) && (Time.time > lastShot + shootInterval) && currentState != PlayerState.Killed)
             {
                 //play sound
-                Shoot();
+                bulletSound = new Sound("Bang.wav", false);
+                Shoot(); 
+                bulletSound.Play();
                 lastShot = Time.time;
             }
         }
