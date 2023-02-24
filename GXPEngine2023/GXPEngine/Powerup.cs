@@ -41,8 +41,8 @@ class Powerup : AnimationSprite
         {
             switch (powerUpID)
             {
-                case 0: player.ActivateSpeedBoost();    break;
-                case 1: player.ActivateShootingBoost(); break;
+                case 0: player.isSpeedBoostActive = true; player.ActivateSpeedBoost();    break;
+                case 1: player.isShootBoostActive = true; player.ActivateShootingBoost(); break;
                 case 2: player.ActivateShield();        break;
                 case 3: player.AddLife();               break;
             }
