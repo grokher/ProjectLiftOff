@@ -15,6 +15,8 @@ class Crystal : AnimationSprite
 
     HUD hud = null;
 
+    Sound damageSound;
+
     public Crystal() : base("Crystal.png",3,1,60,false, true)
     {
         SetXY(width / 4, height / 4);
@@ -32,11 +34,13 @@ class Crystal : AnimationSprite
 
     void OnCollision(GameObject other)
     {
+        damageSound = new Sound("ping.wav", false);
         if (other is Enemy)
         {
             //HitTest(other);
             other.LateRemove();
             health--;
+            damageSound.Play();
             Console.WriteLine("health " + health );
         }
         if (health <= 0)
