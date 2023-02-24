@@ -1,9 +1,4 @@
-﻿using GXPEngine.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TiledMapParser;
+﻿using System;
 
 namespace GXPEngine
 {
@@ -29,7 +24,7 @@ namespace GXPEngine
         float moveSpeed = 6f;
 
         //shooting
-        const int shootInterval = 300;
+        float shootInterval = 300f;
         int lastShot = 0;
 
         // invincible frames
@@ -37,18 +32,17 @@ namespace GXPEngine
         float damagedTimeOut = 0f;
 
         //powerups
-        private bool isSpeedBoostActive = false;
-        private bool isShootBoostActive = false;
+        public bool isSpeedBoostActive;
+        public bool isShootBoostActive;
         static float speedMultiplier = 2f;
-        static float speedBoostDuration = 5000f;
-        float powerupDuration = 10000f;
+        static float PowerupDuration = 5000f;
+
 
         int animCounter;
         int animFrame;
 
         Sound bulletSound;
-
-        public Player() : base("spaceship.png",1,2,6)
+        public Player() : base("spaceship.png", 1, 2, 6)
         {
             SetScaleXY(0.8f, 0.8f);
             SpawnPlayer();
@@ -87,20 +81,21 @@ namespace GXPEngine
         //movement
         public void MoveSpaceShip()
         {
-            if (isSpeedBoostActive == true && Input.GetKey(Key.W))
+            /*if (isSpeedBoostActive == true && Input.GetKey(Key.W))
             {
                 Move(0, moveSpeed * speedMultiplier);
-            }
-            else if (Input.GetKey(Key.W))
+            }*/
+            if (Input.GetKey(Key.W))
             {
                 Move(0, moveSpeed);
             }
 
-            if(isSpeedBoostActive == true && Input.GetKey(Key.S))
+            /*if(isSpeedBoostActive == true && Input.GetKey(Key.S))
             {
                 Move(0, -moveSpeed * speedMultiplier);
             }
-            else if (Input.GetKey(Key.S))
+            else */
+            if (Input.GetKey(Key.S))
             {
                 Move(0, -moveSpeed);
             }
@@ -113,7 +108,8 @@ namespace GXPEngine
                 currentState = newState;
                 //respond to changes
 
-                switch (currentState) {
+                switch (currentState)
+                {
                     case PlayerState.Damaged:
                         damagedTimeOut = DamageBlinkingTime;
                         break;
@@ -121,7 +117,6 @@ namespace GXPEngine
                         alpha = 1f;
                         break;
                     case PlayerState.SpeedBoost:
-                        //time
                         break;
                     case PlayerState.ShootBoost:
                         //shoot interval less
@@ -154,36 +149,57 @@ namespace GXPEngine
         //enable double speed
         public void ActivateSpeedBoost()
         {
-            Console.WriteLine("Got the boost");
-            isSpeedBoostActive = true;
-            powerupDuration -= Time.deltaTime;
-            if (powerupDuration < 0f)
+            currentState = PlayerState.SpeedBoost;
+            if (Input.GetKey(Key.J) && isSpeedBoostActive)
             {
-                SetState(PlayerState.Alive);
+                Console.WriteLine("Boost activated");
                 isSpeedBoostActive = false;
-                speedMultiplier = 1f;
+                moveSpeed *= speedMultiplier;
+            }
+
+            if (!isSpeedBoostActive)
+            {
+                PowerupDuration -= Time.deltaTime;
+                if (PowerupDuration <= 0.0f)
+                {
+                    currentState = PlayerState.Alive;
+                    moveSpeed /= speedMultiplier;
+                    PowerupDuration = 5000f;
+                }
             }
         }
 
         public void ActivateShootingBoost()
         {
-            // TODO
-            Console.WriteLine("Rambo");
-            if (Input.GetKey(Key.J))
+            currentState = PlayerState.ShootBoost;
+            if (Input.GetKey(Key.J) && isShootBoostActive)
             {
-                //int shootInterval = 150;
+                Console.WriteLine("Rambo");
+                isShootBoostActive = false;
+                shootInterval = 100f;
+            }
+            if (!isShootBoostActive)
+            {
+                PowerupDuration -= Time.deltaTime;
+                if (PowerupDuration <= 0.0f)
+                {
+                    currentState = PlayerState.Alive;
+                    shootInterval = 300f;
+                    PowerupDuration = 5000f;
+                }
             }
         }
 
-        public void ActivateShield() 
+        public void ActivateShield()
         {
             Console.WriteLine("Force Field");
         }
-        public void AddLife() 
+        public void AddLife()
         {
-            //game.health++;
+            Crystal crystal = new Crystal();
+            crystal.health += 10;
+            Console.WriteLine("Added health");
         }
-
 
         private void ScreenEdge()
         {
@@ -193,9 +209,9 @@ namespace GXPEngine
                 int gameWidth = MyGame.main.width;
                 int gameHeight = MyGame.main.height;
 
-                if (x < width/2)
+                if (x < width / 2)
                 {
-                    x = width/2;
+                    x = width / 2;
                 }
                 else if (x > gameWidth - width / 2)
                 {
@@ -248,6 +264,12 @@ namespace GXPEngine
 
                 case PlayerState.SpeedBoost:
                     ActivateSpeedBoost();
+                    HandleShooting();
+                    break;
+
+                case PlayerState.ShootBoost:
+                    ActivateShootingBoost();
+                    HandleShooting();
                     break;
 
                 case PlayerState.Killed:
@@ -259,10 +281,10 @@ namespace GXPEngine
         {
             if (Input.GetKey(Key.SPACE) && (Time.time > lastShot + shootInterval) && currentState != PlayerState.Killed)
             {
-                //play sound
                 bulletSound = new Sound("Bang.wav", false);
-                Shoot(); 
+                Shoot();
                 bulletSound.Play();
+
                 lastShot = Time.time;
             }
         }
@@ -280,44 +302,7 @@ namespace GXPEngine
                     SetState(PlayerState.Damaged);
                 }
             }
-            
+
         }
-        /*public void ApplyPowerUp(Powerup powerup)
-        {
-            Powerup speedBoost = new Powerup(Powerup.Type.SpeedBoost, 2f, 5000f);
-            player.ApplyPowerUp(speedBoost);
-            switch (powerup.type)
-            {
-                case Powerup.Type.SpeedBoost:
-                    isSpeedBoostActive = true;
-                    speedMultiplier = powerup.multiplier;
-                    powerupDuration = powerup.duration;
-                    SetState(PlayerState.SpeedBoost);
-                    break;
-
-                case Powerup.Type.ShootBoost:
-                    // TODO: Implement shoot boost
-                    break;
-
-                default:
-                    // Unknown power-up type
-                    break;
-            }
-        }
-
-
-        /*public void SpeedBoostActivate()
-        {
-            if (isSpeedBoostActive == false)
-            {
-                isSpeedBoostActive = true;
-                Console.WriteLine("Boost on");
-                
-            }
-            else
-            {
-                speedBoostDuration 
-            }
-        }*/
     }
 }
