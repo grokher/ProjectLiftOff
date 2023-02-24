@@ -16,7 +16,7 @@ public class MyGame : Game
     float nextWave = 15000f;
     Sound soundtrack;
 
-    public MyGame() : base(1366, 768, false, false)     // Create a window that's 1366x768 and IS fullscreen and NOT using Vsync
+    public MyGame() : base(1366, 768, true, false)     // Create a window that's 1366x768 and IS fullscreen and NOT using Vsync
     //public MyGame() : base(1366, 768, true, false)     // Create a window that's 1366x768 and IS fullscreen and NOT using Vsync
     {
         ShowMouse(false);

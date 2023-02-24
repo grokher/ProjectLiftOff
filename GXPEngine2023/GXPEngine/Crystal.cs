@@ -7,7 +7,7 @@ using GXPEngine;
 
 class Crystal : AnimationSprite
 {
-    public int health = 100;
+    public int health = 10;
 
 
     int animCounter;
