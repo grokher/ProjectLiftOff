@@ -13,9 +13,6 @@ namespace GXPEngine
             Killed
         }
 
-        //private Dictionary<string, Powerup> inventory;
-        //private Powerup activePowerup;
-
         static float BlinkingRate = 500f;
         static float DamageBlinkingTime = 2000f;
 
@@ -194,11 +191,11 @@ namespace GXPEngine
         {
             Console.WriteLine("Force Field");
         }
+        
         public void AddLife()
         {
-            Crystal crystal = new Crystal();
-            crystal.health += 10;
-            Console.WriteLine("Added health");
+            Crystal.health+=10;
+            Console.WriteLine("Plus 10 health");
         }
 
         private void ScreenEdge()

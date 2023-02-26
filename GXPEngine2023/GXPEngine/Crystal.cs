@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using GXPEngine;
 
-class Crystal : AnimationSprite
+public class Crystal : AnimationSprite
 {
-    public int health = 10;
-
+    public static int health = 10;
+    static public Crystal crystal;
 
     int animCounter;
     int animFrame;
@@ -51,15 +51,8 @@ class Crystal : AnimationSprite
             //game lost
         }
     }
-    public void Health(int healthAmount)
-    {
-        health -= healthAmount;
 
-    }
-
- 
-
-    private void Anim()
+        private void Anim()
     {
         animCounter++;
         if (animCounter > 10)
